@@ -12,33 +12,251 @@
 
 <body>
 
-<div id="qweasdzxc" style="display: none; text-align: center; justify-content: center; align-items: center;">
-    <!-- <button onclick="hideFrame()"
-            class="btn-close" aria-label="Close"
-            style="background-color:#008B8B; color: #ffffff; border-color: #008B8B; text-shadow: 0 0px 0 #f3f3f3; width: 10px;"></button> -->
-    <a onclick="hideFrame()" href="#" class="close-icon"></a>
-    <iframe id="frame" name="zxc" width="900" height="700"></iframe>
+<div id="modal_dialog" class="modal">
+
+    <div id="modal_content" class="modal-content">
+        <span class="close">&times;</span>
+        <iframe id="frame" name="answer_frame" width="100%" height="700"></iframe>
+    </div>
+
 </div>
 
 <div data-role="main" class="ui-content">
     <fieldset data-role="collapsible"> <!-- data-collapsed="false" -->
         <legend>State</legend>
         <div style="border: solid; border-color: #979797; border-radius: 10px; padding: 1% 1% 0% 1%; margin-bottom: 10px">
-            <form id="setForm" action="http://localhost:9090/atlantis/x-admin?method=setState" method="post" target="zxc">
+            <form id="setForm" action="http://localhost:9090/atlantis/x-admin?method=setState" method="post" target="answer_frame" onsubmit="show_dialog()">
                 <input name="sure" value="yes" type="hidden"/>
                 <input name="version" value="0" type="hidden"/>
                 <input name="versionClient" value="2147483647" type="hidden"/>
 
-                userId: <input class="correct" name="uid"/>
-                data: <textarea id="defaultState" rows="20" cols="100" name="data" class="asd"></textarea>
+                User ID: <input class="correct" name="uid"/>
+                State: <textarea id="defaultState" rows="20" cols="100" name="data" class="asd"></textarea>
 
                 <button id="button"
-                        type="submit" 
-                        onclick="showFrame()"
                         style="background-color:#008B8B; color: #ffffff; border-color: #008B8B; text-shadow: 0 0px 0 #f3f3f3; width: 150px;">Set State
                 </button>
             </form>
         </div>
+
+        <div class="grid">
+
+            <div style="border: solid; border-color: #979797; border-radius: 10px; padding: 1% 1% 0% 1%; margin-bottom: 10px" class="grid-item">
+                <form action="http://localhost:9090/atlantis/x-admin?method=getState" method="post" target="answer_frame" onsubmit="show_dialog()">
+                    <p>User ID: <input class="correct" name="uid"/>
+                    <p>
+                        <button type="submit"
+                                style="background-color:#c7b913;; color: #ffffff; border-color: #c7b913;; text-shadow: 0 0px 0 #f3f3f3; width: 150px;">Get State
+                        </button>
+                </form>
+            </div>
+
+            <div style="border: solid; border-color: #979797; border-radius: 10px; padding: 1% 1% 0% 1%; margin-bottom: 10px" class="grid-item">
+                <form action="http://localhost:9090/atlantis/x-admin?method=resetState" method="post" target="answer_frame" onsubmit="show_dialog()">
+                    <p>User ID: <input class="not_correct" name="uid"/>
+                    <p>
+                        <button type="submit"
+                                style="background-color:#d11717; color: #ffffff; border-color: #d11717; text-shadow: 0 0px 0 #f3f3f3; width: 150px;">Reset State
+                        </button>
+                </form>
+            </div>
+        </div>
+
+    </fieldset>
+</div>
+
+<div data-role="main" class="ui-content">
+    <fieldset data-role="collapsible">
+        <legend>Features</legend>
+
+        <div class="grid">
+            <div style="border: solid; border-color: #979797; border-radius: 10px; padding: 1% 1% 0% 1%; margin-bottom: 10px" class="grid-item">
+                <form action="http://localhost:9090/atlantis/x-admin?method=disableAllFeatures" method="post"
+                      target="answer_frame" onsubmit="show_dialog()">
+                    User ID: <input name="User ID"/>
+                    <button type="submit"
+                            style="background-color:#d11717; color: #ffffff; border-color: #d11717; text-shadow: 0 0px 0 #f3f3f3; width: 150px;">
+                        Disable All
+                    </button>
+                </form>
+                <fieldset data-role="collapsible" style="margin-bottom: 1%">
+                    <legend>Info</legend>
+                    <p>
+                        Данная кнопка задумывалась для случая,
+                        когда сервер только стартанул и у нас еще нет подключенных клиентов к нему,
+                        чтобы перед их подключением выключить все фичи.
+                        Поэтому для такого кейса использования адишка не нужна.
+                    </p>
+                    <p>
+                        Но если ее все таки указать, то по факту кнопка и все фичи выключит и сессию для указанного
+                        пользователя перезагрузит.
+                    </p>
+                </fieldset>
+            </div>
+
+            <div style="border: solid; border-color: #979797; border-radius: 10px; padding: 1% 1% 0% 1%; margin-bottom: 10px" class="grid-item">
+                <form action="http://localhost:9090/atlantis/x-admin?method=disableFeature" method="post"
+                      target="answer_frame" onsubmit="show_dialog()">
+                    User ID: <input class="correct" name="User ID" style="width: 100px"/>
+                    Feature ID: <input name="id"/>
+                    <button type="submit"
+                            style="background-color:#d11717; color: #ffffff; border-color: #d11717; text-shadow: 0 0px 0 #f3f3f3; width: 150px;">
+                        Disable
+                    </button>
+                </form>
+                <fieldset data-role="collapsible" style="margin-bottom: 1%">
+                    <legend>Info</legend>
+                    <p>
+                        Данная кнопка выключает фичу в любой момент игровой сессии.
+                        <br>
+                        <b>Поле "User ID" обязательно для указания.</b>
+                    </p>
+                </fieldset>
+            </div>
+
+            <div style="border: solid; border-color: #979797; border-radius: 10px; padding: 1% 1% 0% 1%; margin-bottom: 10px" class="grid-item">
+                <form action="http://localhost:9090/atlantis/x-admin?method=enableFeature" method="post"
+                      target="answer_frame" onsubmit="show_dialog()">
+                    User ID: <input class="correct" name="User ID" style="width: 100px"/>
+                    Выключить через (мин): <input value="15" name="end"/>
+                    Feature ID: <input name="id"/>
+                    <button type="submit"
+                            style="background-color:#008B8B; color: #ffffff; border-color: #008B8B; text-shadow: 0 0px 0 #f3f3f3; width: 150px;">
+                        Enable
+                    </button>
+                </form>
+            </div>
+        </div>
+    </fieldset>
+
+</div>
+
+<div data-role="main" class="ui-content">
+    <fieldset data-role="collapsible">
+        <legend>Add</legend>
+        <div class="grid">
+            <div style="border: solid; border-color: #979797; border-radius: 10px; padding: 1% 1% 0% 1%; margin-bottom: 10px" class="grid-item">
+                <form action="http://localhost:9090/atlantis/x-admin?method=levelUp&item=XP" method="post" target="answer_frame" onsubmit="show_dialog()">
+                    User ID: <input class="correct" name="User ID" style="width: 100px"/>
+                    Amount: <input name="count" style="width: 100px"/>
+                    <button type="submit" style="background-color:#008B8B; color: #ffffff; border-color: #008B8B; text-shadow: 0 0px 0 #f3f3f3; width: 150px;">Level up</button>
+                </form>
+            </div>
+
+            <div style="border: solid; border-color: #979797; border-radius: 10px; padding: 1% 1% 0% 1%; margin-bottom: 10px" class="grid-item">
+                <form action="http://localhost:9090/atlantis/x-admin?method=addItem&item=CASH" method="post" target="answer_frame" onsubmit="show_dialog()">
+                    User ID: <input class="correct" name="to" style="width: 100px"/>
+                    Amount: <input name="count" style="width: 100px"/>
+                    <button type="submit" style="background-color:#008B8B; color: #ffffff; border-color: #008B8B; text-shadow: 0 0px 0 #f3f3f3; width: 150px;">Cash
+                    </button>
+                </form>
+            </div>
+
+            <div style="border: solid; border-color: #979797; border-radius: 10px; padding: 1% 1% 0% 1%; margin-bottom: 10px" class="grid-item">
+                <form action="http://localhost:9090/atlantis/x-admin?method=addItem&item=ENERGY" method="post" target="answer_frame" onsubmit="show_dialog()">
+                    User ID: <input class="correct" name="to" style="width: 100px"/>
+                    Amount: <input name="count" style="width: 100px"  value="99999999"/>
+                    <button type="submit" style="background-color:#008B8B; color: #ffffff; border-color: #008B8B; text-shadow: 0 0px 0 #f3f3f3; width: 150px;">Energy
+                    </button>
+                </form>
+            </div>
+
+            <div style="border: solid; border-color: #979797; border-radius: 10px; padding: 1% 1% 0% 1%; margin-bottom: 10px" class="grid-item">
+                <form action="http://localhost:9090/atlantis/x-admin?method=addItem&item=XP" method="post" target="answer_frame" onsubmit="show_dialog()">
+                    User ID: <input class="correct" name="to" style="width: 100px"/>
+                    Amount: <input name="count" style="width: 100px"/>
+                    <button type="submit" style="background-color:#008B8B; color: #ffffff; border-color: #008B8B; text-shadow: 0 0px 0 #f3f3f3; width: 150px;">XP</button>
+                </form>
+            </div>
+
+
+            <div style="border: solid; border-color: #979797; border-radius: 10px; padding: 1% 1% 0% 1%; margin-bottom: 10px" class="grid-item">
+                <form action="http://localhost:9090/atlantis/x-admin?method=addItem" method="post" target="answer_frame" onsubmit="show_dialog()">
+                    User ID: <input class="correct" name="to" style="width: 100px"/>
+                    Item ID <input name="item" value=""/>
+                    Amount: <input name="count" value="1"/>
+                    <button type="submit" style="background-color:#008B8B; color: #ffffff; border-color: #008B8B; text-shadow: 0 0px 0 #f3f3f3; width: 160px;">Something
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </fieldset>
+</div>
+
+<div data-role="main" class="ui-content">
+    <fieldset data-role="collapsible">
+        <legend>Ratings</legend>
+
+        <div style="border: solid; border-color: #979797; border-radius: 10px; padding: 1% 1% 0% 1%; margin: 4px" class="grid">
+            <div style="padding-bottom: 1%;" class="grid-item">
+                <form action="http://localhost:9090/atlantis/x-admin?method=makeRatingSnapshot" method="post" target="answer_frame" onsubmit="show_dialog()">
+                    <button type="submit"
+                            style="background-color:#008B8B; color: #ffffff; border-color: #008B8B; text-shadow: 0 0px 0 #f3f3f3; width: 150px;"
+                            title="Сделать снапшот рейтингов, чтобы не ждать 5 минут, пока они обновятся">
+                        Snapshot
+                    </button>
+                </form>
+            </div>
+            <div style="padding-bottom: 1%;" class="grid-item">
+                <form action="http://localhost:9090/atlantis/x-admin?method=getRating" method="post">
+                    <button type="submit"
+                            style="background-color:#008B8B; color: #ffffff; border-color: #008B8B; text-shadow: 0 0px 0 #f3f3f3; width: 150px;"
+                            title="Просмотреть доступные рейтинги">
+                        Get Rating
+                    </button>
+                </form>
+            </div>
+            <div style="padding-bottom: 1%;" class="grid-item">
+                <form action="http://localhost:9090/atlantis/x-admin?method=getRatingEventInfos" method="post" target="answer_frame" onsubmit="show_dialog()">
+                    <button type="submit"
+                            style="background-color:#008B8B; color: #ffffff; border-color: #008B8B; text-shadow: 0 0px 0 #f3f3f3; width: 150px;"
+                            title="Посмотреть общую информацию о рейтингах: какие рейтинги есть в айтемах, даты их старта и завершения и прочее">
+                        Rating Info
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div style="border: solid; border-color: #979797; border-radius: 10px; padding: 1% 1% 0% 1%; margin-bottom: 10px" class="grid-item">
+                <form action="http://localhost:9090/atlantis/x-admin?method=fillBunchRating" method="post" target="answer_frame" onsubmit="show_dialog()">
+                    startPoints: <input name="startPoints" value="10"/>
+                    maxPoints: <input name="maxPoints" value="100"/>
+                    usersNumber: <input name="usersNumber" value="20"/>
+                    eventId: <input name="eventId" value="" placeholder="RATING_ENERGY_PASS_16"/>
+                    ratingId: <input name="ratingId" value="" placeholder="rating:1-UR0"/>
+                    <button type="submit"
+                            style="background-color:#008B8B; color: #ffffff; border-color: #008B8B; text-shadow: 0 0px 0 #f3f3f3; width: 150px;"
+                            title="Заполнение группового рейтинга фейковыми пользователями">Fill Bunch
+                    </button>
+                </form>
+            </div>
+
+            <div style="border: solid; border-color: #979797; border-radius: 10px; padding: 1% 1% 0% 1%; margin-bottom: 10px" class="grid-item">
+                <form action="http://localhost:9090/atlantis/x-admin?method=fillRating" method="post" target="answer_frame" onsubmit="show_dialog()">
+                    startPoints: <input name="startPoints" value="1000"/>
+                    maxPoints: <input name="maxPoints" value="8000"/>
+                    usersNumber: <input name="usersNumber" value="100"/>
+                    ratingEvent: <input name="eventId" value="" placeholder="RATING_ENERGY_PASS_16"/>
+                    <button type="submit"
+                            style="background-color:#008B8B; color: #ffffff; border-color: #008B8B; text-shadow: 0 0px 0 #f3f3f3; width: 150px;"
+                            title="Заполнение глобального рейтинга фейковыми пользователями">Fill Global
+                    </button>
+                </form>
+            </div>
+
+            <div style="border: solid; border-color: #979797; border-radius: 10px; padding: 1% 1% 0% 1%; margin-bottom: 10px" class="grid-item">
+                <form action="http://localhost:9090/atlantis/x-admin?method=viewBunchRatingDistributor" method="post" target="answer_frame" onsubmit="show_dialog()">
+                    eventId: <input name="eventId" value="" placeholder="RATING_ENERGY_PASS_16"/>
+                    <button type="submit"
+                            style="background-color:#008B8B; color: #ffffff; border-color: #008B8B; text-shadow: 0 0px 0 #f3f3f3; width: 150px;"
+                            title="Посмотреть все неполные групповые рейтинги">View Bunch
+                    </button>
+                </form>
+            </div>
+        </div>
+
     </fieldset>
 </div>
 
@@ -46,38 +264,35 @@
 
 
 <script type="text/javascript">
-    let collection = document.getElementsByClassName('correct');
-    for (var i=0; i < collection.length; i++) {
-      collection[i].value = '1-S0';
+    let correct_ids = document.getElementsByClassName('correct');
+    for (var i=0; i < correct_ids.length; i++) {
+      correct_ids[i].value = '1-S0';
     }
     
-    let collection_1 = document.getElementsByClassName('not_correct');
+    let incorrect_ids = document.getElementsByClassName('not_correct');
 
-    for (var i=0; i < collection_1.length; i++) {
-      collection_1[i].value = '...';
+    for (var i=0; i < incorrect_ids.length; i++) {
+      incorrect_ids[i].value = '...';
     }
 
-    function showFrame()
+    function show_dialog()
     {
-        let element = document.getElementById('qweasdzxc');
-        element.style.position = 'absolute';
-        element.style.backgroundColor = 'white';
-        element.style.left = '30%';
-        element.style.right = '30%';
-        element.style.bottom = '30%';
-        element.style.top = '10%';
-        element.style.margin = '10px';
-        element.style.padding = '10px';
-        element.style.display = 'block';
-        element.style.width = '900';
-        element.style.height = '700';
+
+        var modal = document.getElementById("modal_dialog");
+        modal.style.display = "block";
+
+        var span = document.getElementsByClassName("close")[0];
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
     }
 
-    function hideFrame()
-    {
-        let element = document.getElementById('qweasdzxc');
-        element.style.display = 'none';
-    }
 </script>
 
 
@@ -108,6 +323,59 @@
         background-color:red;
         box-shadow:0px 0px 5px 2px rgba(0,0,0,0.5);
         transition: all 0.3s ease;
+    }
+
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+    }
+
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: auto auto auto;
+    }
+
+    .grid-item {
+        margin: 5px;
+    }
+
+    .ui-input-text, .ui-input-search {
+        margin: .5em 0;
+        border-width: 1px;
+        border-style: solid;
+        width: 120px;
     }
 </style>
 
